@@ -24,8 +24,6 @@ corrplot(cor(df[,-1]), order = "hclust", tl.col='black', tl.cex=1)
 
 #matiz de correlaciÃ³n
 cor(df[c(-1)])
-#correlación entre dos variables para evaluar / testeo
-#cor.test(df$Bares.y.CT, df$Carabineros.1000)
 
 #Primero haremos una regresión multiple (evaluar multicolinealidad), 
 #luego PCA para evaluar la las denuncias. Finalmente PCR y PLS usando Machine Learning para evaluar la las denuncias.
@@ -65,7 +63,7 @@ summary(modelo_step)
 
 round(cor(x = df[-c(1, 3, 5)], method = "pearson"), 3)
 #La ecuación predice en un 99,41% los cambios de las denuncias (multicolinealidad).
-#El modelo lineal múltiple es capaz de explicar el 99.4% de la variabilidad observada en las denuncias.
+#El modelo lineal múltiple es capaz de explicar el % de la variabilidad observada en las denuncias.
 
 #Matriz de correlación entre predictores.
 library(corrplot)
@@ -75,7 +73,7 @@ corrplot(cor(dplyr::select(df, Poblacion, Cesantes, Tasa_Drog,
 
 ####Opcional
 #intervalo de confianza para cada uno de los coeficientes parciales de regresión
-#confint(lm(formula = Denuncias ~ Poblacion + Pob_Act + Tasa_Drog + Bares.y.CT + Carabineros.1000, data = df))
+#confint(lm(formula = Denuncias ~ Poblacion + Cesantes + Tasa_Drog + Bares.y.CT + Sin_Carabineros + M2A_Verd + Viv_defic, data = df))
 
 ###Validación  corrregir predictores
 library(ggplot2)
@@ -201,9 +199,9 @@ ggplot(data = data.frame(prop_varianza_acum, pc = 1:9),
   labs(x = "Componente principal",
        y = "Prop. varianza explicada acumulada")
 
-#En este caso, la primera componente explica el 44.49% 
-#de la varianza observada en los datos, la segunda el 32.33% y la tercera + 18.42
-#las tres primeras componentes explican el 95.24% de la varianza observada.
+#En este caso, la primera componente explica el % 
+#de la varianza observada en los datos, la segunda el % y la tercera + 
+#las tres primeras componentes explican el % de la varianza observada.
 
 #############################################
 #Otra forma de hacer PCA (Clases)
@@ -249,7 +247,7 @@ plot(del)
 #Ajustaremos un modelo de regresión de componentes principales (PCR) 
 #utilizando Denuncias como variable de respuesta y las siguientes variables 
 #como variables predictoras:
-#PoblaciÃ³n, Pob_Act, Tasa_Drog, Bares.y.CT, Carabineros.1000, M2A_Verd
+#Poblacion + Cesantes + Tasa_Drog + Bares.y.CT + Sin_Carabineros + M2A_Verd + Viv_defic
 
 df2 = na.omit(df) # Omit empty rows
 #Semilla
@@ -312,10 +310,10 @@ plot(pcr_pred)
 mean((pcr_pred-y_test)^2)
 sqrt (mean((pcr_pred-y_test)^2))
 
-# RMSE de prueba resulta ser 25.69
+# RMSE de prueba resulta ser 
 # Ésta es la desviación promedio entre el valor predicho de denuncias y 
 # el valor observado de denuncias para las observaciones.
-# El valor de la media entre los predichos y medidos es de 660.06
+# El valor de la media entre los predichos y medidos es de 
 
 x = model.matrix(Denuncias~., df)[,-1]
 
